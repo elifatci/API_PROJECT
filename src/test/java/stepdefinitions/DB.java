@@ -1,0 +1,104 @@
+package stepdefinitions;
+
+import com.github.javafaker.Faker;
+import io.cucumber.java.en.Given;
+import manage.QueryManage;
+import utilities.DB_Utilities.DBUtils;
+
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
+public class DB {
+    PreparedStatement preparedStatement;
+    QueryManage queryManage = new QueryManage();
+    Faker faker = new Faker();
+    String query;
+    ResultSet resultSet;
+    protected int id;
+    String name;
+    int state_id;
+    int status;
+
+    @Given("Connected to the Database")
+    public void connected_to_the_database() {
+        DBUtils.createConnection();
+    }
+
+    @Given("Query08 is prepared and executed")
+    public void query08_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQuery08();
+        resultSet = DBUtils.getStatement().executeQuery(query);
+
+    }
+
+    @Given("The ResultSet08 results are processed")
+    public void the_result_set08_results_are_processed() throws SQLException {
+        String[] expectedOrder = {"Shipped", "Recieved", "Processing", "Pending", "Delivered"};
+
+        int index = 0;
+        while (resultSet.next() && index < expectedOrder.length) {
+            String name = resultSet.getString("name");
+            System.out.println(name);
+            assertEquals(expectedOrder[index], name);
+            index++;
+        }
+
+    }
+
+    @Given("The database connection is closed")
+    public void the_database_connection_is_closed() {
+            DBUtils.closeConnection();
+    }
+
+    @Given("Query026 is prepared and executed")
+    public void query026_is_prepared_and_executed() throws SQLException {
+            query=queryManage.getQuery26();
+            resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet026 results are processed")
+    public void the_result_set026_results_are_processed() throws SQLException {
+        List<Double> amountList = new ArrayList<>();
+        List<Double> expectedtList = new ArrayList<>();
+        expectedtList.add(1.903996755E7);
+        expectedtList.add(9164.0);
+        while (resultSet.next()){
+            String paymentMethod=resultSet.getString("payment_method");
+            double totalAmount = resultSet.getDouble("total_amount");
+            amountList.add(totalAmount);
+            for (int i = 0; i < amountList.size(); i++) {
+                assertEquals(expectedtList.get(i), amountList.get(i));
+            }
+        }
+
+    }
+
+    @Given("Query02 is prepared and executed")
+    public void query02_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_02();
+        id= faker.number().numberBetween(111111111,222222222);
+        name=faker.name().firstName();
+        state_id=faker.number().numberBetween(1,20);
+        status=faker.number().numberBetween(1,20);
+        Date created_at=Date.valueOf(LocalDate.now());
+        preparedStatement = DBUtils.getPraperedStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, name);
+        preparedStatement.setInt(3, state_id);
+        preparedStatement.setInt(4, status);
+        preparedStatement.setDate(5, created_at);
+
+    }
+    @Given("The ResultSet02 results are processed")
+    public void the_result_set02_results_are_processed() throws SQLException {
+        int rowCount = preparedStatement.executeUpdate();
+        assertEquals(1, rowCount);
+    }
+
+}

@@ -100,5 +100,32 @@ public class DB {
         int rowCount = preparedStatement.executeUpdate();
         assertEquals(1, rowCount);
     }
+    @Given("Query11 is prepared and executed")
+    public void query11_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_011();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+
+    }
+    @Given("The ResultSet11 results are processed")
+    public void the_result_set11_results_are_processed() throws SQLException {
+        resultSet.next();
+        int actualtotal_amount = resultSet.getInt("total_amount");
+        int expectedtotal_amount = 10;
+        assertEquals(expectedtotal_amount,actualtotal_amount);
+
+    }
+
+    @Given("Query14 is prepared and executed")
+    public void query14_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_14();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet14 results are processed")
+    public void the_result_set14_results_are_processed() throws SQLException {
+        resultSet.next();
+        String reason=resultSet.getString("COUNT(*)");
+        int expectedCount=15;
+        assertEquals(expectedCount,reason);
+    }
 
 }

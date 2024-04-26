@@ -57,22 +57,23 @@ public class DB {
 
     @Given("The database connection is closed")
     public void the_database_connection_is_closed() {
-            DBUtils.closeConnection();
+        DBUtils.closeConnection();
     }
 
     @Given("Query026 is prepared and executed")
     public void query026_is_prepared_and_executed() throws SQLException {
-            query=queryManage.getQuery26();
-            resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQuery26();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet026 results are processed")
     public void the_result_set026_results_are_processed() throws SQLException {
         List<Double> amountList = new ArrayList<>();
         List<Double> expectedtList = new ArrayList<>();
         expectedtList.add(1.903996755E7);
         expectedtList.add(9164.0);
-        while (resultSet.next()){
-            String paymentMethod=resultSet.getString("payment_method");
+        while (resultSet.next()) {
+            String paymentMethod = resultSet.getString("payment_method");
             double totalAmount = resultSet.getDouble("total_amount");
             amountList.add(totalAmount);
             for (int i = 0; i < amountList.size(); i++) {
@@ -84,12 +85,12 @@ public class DB {
 
     @Given("Query02 is prepared and executed")
     public void query02_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_02();
-        id= faker.number().numberBetween(111111111,222222222);
-        name=faker.name().firstName();
-        state_id=faker.number().numberBetween(1,20);
-        status=faker.number().numberBetween(1,20);
-        Date created_at=Date.valueOf(LocalDate.now());
+        query = queryManage.getQueryUS_02();
+        id = faker.number().numberBetween(111111111, 222222222);
+        name = faker.name().firstName();
+        state_id = faker.number().numberBetween(1, 20);
+        status = faker.number().numberBetween(1, 20);
+        Date created_at = Date.valueOf(LocalDate.now());
         preparedStatement = DBUtils.getPraperedStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.setString(2, name);
@@ -98,42 +99,47 @@ public class DB {
         preparedStatement.setDate(5, created_at);
 
     }
+
     @Given("The ResultSet02 results are processed")
     public void the_result_set02_results_are_processed() throws SQLException {
         int rowCount = preparedStatement.executeUpdate();
         assertEquals(1, rowCount);
     }
+
     @Given("Query11 is prepared and executed")
     public void query11_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_011();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_011();
+        resultSet = DBUtils.getStatement().executeQuery(query);
 
     }
+
     @Given("The ResultSet11 results are processed")
     public void the_result_set11_results_are_processed() throws SQLException {
         resultSet.next();
         int actualtotal_amount = resultSet.getInt("total_amount");
         int expectedtotal_amount = 10;
-        assertEquals(expectedtotal_amount,actualtotal_amount);
+        assertEquals(expectedtotal_amount, actualtotal_amount);
 
     }
 
     @Given("Query14 is prepared and executed")
     public void query14_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_14();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_14();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet14 results are processed")
     public void the_result_set14_results_are_processed() throws SQLException {
         resultSet.next();
-        String reason=resultSet.getString("COUNT(*)");
-        int expectedCount=15;
-        assertEquals(expectedCount,reason);
+        String reason = resultSet.getString("COUNT(*)");
+        int expectedCount = 15;
+        assertEquals(expectedCount, reason);
     }
+
     @Given("Query20 is prepared and executed")
     public void query20_is_prepared_and_executed() throws SQLException {
         query = queryManage.getQueryUS_020();
-         rowsAffected = 0;
+        rowsAffected = 0;
         int initialId = 1;
         int idIncrement = 1;
         for (int i = 10; i < 20; i++) {
@@ -150,9 +156,37 @@ public class DB {
         }
 
     }
+
     @Given("The ResultSet20 results are processed")
     public void the_result_set20_results_are_processed() {
         assertEquals(10, rowsAffected);
+    }
+
+    @Given("Query23 is prepared and executed")
+    public void query23_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_23();
+        resultSet = DBUtils.getStatement().executeQuery(query);
+    }
+
+    @Given("The ResultSet23 results are processed")
+    public void the_result_set23_results_are_processed() throws SQLException {
+        resultSet.next();
+        int actualCount=resultSet.getInt("type_count");
+        int expCount=6;
+        assertEquals(expCount,actualCount);
+    }
+
+    @Given("Query01 is prepared and executed")
+    public void query01_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_01();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet01 results are processed")
+    public void the_result_set01_results_are_processed() throws SQLException {
+        resultSet.next();
+        String expectedName="Fashion";
+        String actualName=resultSet.getString("name");
+        assertEquals(expectedName,actualName);
     }
 
 }

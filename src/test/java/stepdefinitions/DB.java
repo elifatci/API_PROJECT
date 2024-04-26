@@ -25,6 +25,9 @@ public class DB {
     String name;
     int state_id;
     int status;
+    int user_id;
+    String device_token;
+    int rowsAffected;
 
     @Given("Connected to the Database")
     public void connected_to_the_database() {
@@ -126,6 +129,30 @@ public class DB {
         String reason=resultSet.getString("COUNT(*)");
         int expectedCount=15;
         assertEquals(expectedCount,reason);
+    }
+    @Given("Query20 is prepared and executed")
+    public void query20_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_020();
+         rowsAffected = 0;
+        int initialId = 1;
+        int idIncrement = 1;
+        for (int i = 10; i < 20; i++) {
+            id = initialId + i * idIncrement;
+            user_id = faker.number().numberBetween(3000, 4000);
+            device_token = faker.internet().password();
+            Date created_at = Date.valueOf(LocalDate.now());
+            preparedStatement = DBUtils.getPraperedStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, user_id);
+            preparedStatement.setString(3, device_token);
+            preparedStatement.setDate(4, created_at);
+            rowsAffected += preparedStatement.executeUpdate();
+        }
+
+    }
+    @Given("The ResultSet20 results are processed")
+    public void the_result_set20_results_are_processed() {
+        assertEquals(10, rowsAffected);
     }
 
 }

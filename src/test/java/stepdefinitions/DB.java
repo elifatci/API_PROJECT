@@ -28,6 +28,7 @@ public class DB {
     int user_id;
     String device_token;
     int rowsAffected;
+    int rowCount;
 
     @Given("Connected to the Database")
     public void connected_to_the_database() {
@@ -189,4 +190,41 @@ public class DB {
         assertEquals(expectedName,actualName);
     }
 
+    @Given("Query03Insert is prepared and executed")
+    public void query03_insert_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_03Insert();
+        id = faker.number().numberBetween(110000, 220000);
+        name = faker.name().firstName();
+        state_id=faker.number().numberBetween(1,5);
+        preparedStatement = DBUtils.getPraperedStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, name);
+        preparedStatement.setInt(3,state_id);
+
+    }
+    @Given("The ResultSet03Insert results are processed")
+    public void the_result_set03__insert_results_are_processed() throws SQLException {
+        rowCount =preparedStatement.executeUpdate();
+        int verify = 0;
+        if (rowCount > 0) {
+            verify++;
+        }
+        assertEquals(1, verify);
+    }
+
+    @Given("Query03Del is prepared and executed")
+    public void query03_del_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_03Del();
+        preparedStatement = DBUtils.getPraperedStatement(query);
+        System.out.println(id);
+        System.out.println(name);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, name);
+
+    }
+    @Given("The ResultSet03Del results are processed")
+    public void the_result_set03_del_insert_results_are_processed() throws SQLException {
+        rowCount =preparedStatement.executeUpdate();
+        assertEquals(1,rowCount);
+    }
 }

@@ -29,6 +29,9 @@ public class DB {
     String device_token;
     int rowsAffected;
     int rowCount;
+    String email;
+    int query_type;
+    String message;
 
     @Given("Connected to the Database")
     public void connected_to_the_database() {
@@ -226,5 +229,43 @@ public class DB {
     public void the_result_set03_del_insert_results_are_processed() throws SQLException {
         rowCount =preparedStatement.executeUpdate();
         assertEquals(1,rowCount);
+    }
+
+    @Given("Query04Insert is prepared and executed")
+    public void query04_insert_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_04Insert();
+        id=faker.number().numberBetween(230,430);
+        name=faker.name().firstName();
+        email=faker.internet().emailAddress();
+        query_type=faker.number().numberBetween(10,30);
+        message=faker.lorem().sentence(1);
+        preparedStatement = DBUtils.getPraperedStatement(query);
+        preparedStatement.setInt(1,id);
+        preparedStatement.setString(2,name);
+        preparedStatement.setString(3,email);
+        preparedStatement.setInt(4,query_type);
+        preparedStatement.setString(5,message);
+    }
+    @Given("The ResultSet04 results are processed")
+    public void the_result_set04_results_are_processed() throws SQLException {
+        rowCount=preparedStatement.executeUpdate();
+        assertEquals(1,rowCount);
+    }
+
+    @Given("Query04Update is prepared and executed")
+    public void query04_update_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_04Update();
+        preparedStatement=DBUtils.getPraperedStatement(query);
+        preparedStatement.setString(1,message);
+    }
+    @Given("The ResultSet04Update results are processed")
+    public void the_result_set04__update_results_are_processed() throws SQLException {
+        int result=preparedStatement.executeUpdate();
+        int verify=0;
+        if (result>0){
+            verify++;
+        }
+        assertEquals(1,verify);
+
     }
 }

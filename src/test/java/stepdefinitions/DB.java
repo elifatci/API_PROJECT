@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DB {
     PreparedStatement preparedStatement;
@@ -291,6 +292,20 @@ public class DB {
             int couponId = resultSet.getInt("coupon_id");
             int productCount = resultSet.getInt("product_count");
             System.out.println("Coupon ID: " + couponId + ", Product Count: " + productCount);
+        }
+    }
+
+    @Given("Query07 is prepared and executed")
+    public void query07_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_07();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet07 results are processed")
+    public void the_result_set07_results_are_processed() throws SQLException {
+        while (resultSet.next()){
+            String address=resultSet.getString("address");
+            String phone=resultSet.getString("phone");
+           assertTrue(phone.contains("5"));
         }
     }
 }

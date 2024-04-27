@@ -279,4 +279,18 @@ public class DB {
         rowCount =preparedStatement.executeUpdate();
         assertEquals(1,rowCount);
     }
+
+    @Given("Query06 is prepared and executed")
+    public void query06_is_prepared_and_executed() throws SQLException {
+     query=queryManage.getQueryUS_06();
+     resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet06 results are processed")
+    public void the_result_set06_results_are_processed() throws SQLException {
+        while (resultSet.next()) {
+            int couponId = resultSet.getInt("coupon_id");
+            int productCount = resultSet.getInt("product_count");
+            System.out.println("Coupon ID: " + couponId + ", Product Count: " + productCount);
+        }
+    }
 }

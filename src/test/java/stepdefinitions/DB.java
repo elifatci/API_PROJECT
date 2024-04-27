@@ -268,4 +268,15 @@ public class DB {
         assertEquals(1,verify);
 
     }
+    @Given("Query04Del is prepared and executed")
+    public void query04del_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_05Del();
+        preparedStatement=DBUtils.getPraperedStatement(query);
+        preparedStatement.setString(1,email);
+    }
+    @Given("The ResultSet04Del results are processed")
+    public void the_result_set04del_results_are_processed() throws SQLException {
+        rowCount =preparedStatement.executeUpdate();
+        assertEquals(1,rowCount);
+    }
 }

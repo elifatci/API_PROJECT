@@ -5,9 +5,7 @@ Feature: US05
   Verify that it has been deleted.
 
 
-    * Connected to the Database
     * Query04Insert is prepared and executed
     * The ResultSet04 results are processed
     * Query04Del is prepared and executed
     * The ResultSet04Del results are processed
-    * The database connection is closed

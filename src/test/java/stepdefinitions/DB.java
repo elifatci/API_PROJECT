@@ -1,38 +1,17 @@
 package stepdefinitions;
 
-import com.github.javafaker.Faker;
+import hooks.Base;
 import io.cucumber.java.en.Given;
-import manage.QueryManage;
 import utilities.DB_Utilities.DBUtils;
-
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DB {
-    PreparedStatement preparedStatement;
-    QueryManage queryManage = new QueryManage();
-    Faker faker = new Faker();
-    String query;
-    ResultSet resultSet;
-    protected int id;
-    String name;
-    int state_id;
-    int status;
-    int user_id;
-    String device_token;
-    int rowsAffected;
-    int rowCount;
-    String email;
-    int query_type;
-    String message;
+public class DB extends Base {
 
     @Given("Connected to the Database")
     public void connected_to_the_database() {
@@ -41,7 +20,7 @@ public class DB {
 
     @Given("Query08 is prepared and executed")
     public void query08_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQuery08();
+        query = manage.getQuery08();
         resultSet = DBUtils.getStatement().executeQuery(query);
 
     }
@@ -67,7 +46,7 @@ public class DB {
 
     @Given("Query026 is prepared and executed")
     public void query026_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQuery26();
+        query = manage.getQuery26();
         resultSet = DBUtils.getStatement().executeQuery(query);
     }
 
@@ -90,7 +69,7 @@ public class DB {
 
     @Given("Query02 is prepared and executed")
     public void query02_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_02();
+        query = manage.getQueryUS_02();
         id = faker.number().numberBetween(111111111, 222222222);
         name = faker.name().firstName();
         state_id = faker.number().numberBetween(1, 20);
@@ -113,7 +92,7 @@ public class DB {
 
     @Given("Query11 is prepared and executed")
     public void query11_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_011();
+        query = manage.getQueryUS_011();
         resultSet = DBUtils.getStatement().executeQuery(query);
 
     }
@@ -129,7 +108,7 @@ public class DB {
 
     @Given("Query14 is prepared and executed")
     public void query14_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_14();
+        query = manage.getQueryUS_14();
         resultSet = DBUtils.getStatement().executeQuery(query);
     }
 
@@ -143,7 +122,7 @@ public class DB {
 
     @Given("Query20 is prepared and executed")
     public void query20_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_020();
+        query = manage.getQueryUS_020();
         rowsAffected = 0;
         int initialId = 1;
         int idIncrement = 1;
@@ -169,7 +148,7 @@ public class DB {
 
     @Given("Query23 is prepared and executed")
     public void query23_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_23();
+        query = manage.getQueryUS_23();
         resultSet = DBUtils.getStatement().executeQuery(query);
     }
 
@@ -183,7 +162,7 @@ public class DB {
 
     @Given("Query01 is prepared and executed")
     public void query01_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_01();
+        query= manage.getQueryUS_01();
         resultSet=DBUtils.getStatement().executeQuery(query);
     }
     @Given("The ResultSet01 results are processed")
@@ -196,7 +175,7 @@ public class DB {
 
     @Given("Query03Insert is prepared and executed")
     public void query03_insert_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_03Insert();
+        query = manage.getQueryUS_03Insert();
         id = faker.number().numberBetween(110000, 220000);
         name = faker.name().firstName();
         state_id=faker.number().numberBetween(1,5);
@@ -218,7 +197,7 @@ public class DB {
 
     @Given("Query03Del is prepared and executed")
     public void query03_del_is_prepared_and_executed() throws SQLException {
-        query = queryManage.getQueryUS_03Del();
+        query = manage.getQueryUS_03Del();
         preparedStatement = DBUtils.getPraperedStatement(query);
         System.out.println(id);
         System.out.println(name);
@@ -234,7 +213,7 @@ public class DB {
 
     @Given("Query04Insert is prepared and executed")
     public void query04_insert_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_04Insert();
+        query= manage.getQueryUS_04Insert();
         id=faker.number().numberBetween(230,430);
         name=faker.name().firstName();
         email=faker.internet().emailAddress();
@@ -255,7 +234,7 @@ public class DB {
 
     @Given("Query04Update is prepared and executed")
     public void query04_update_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_04Update();
+        query= manage.getQueryUS_04Update();
         preparedStatement=DBUtils.getPraperedStatement(query);
         preparedStatement.setString(1,message);
     }
@@ -271,7 +250,7 @@ public class DB {
     }
     @Given("Query04Del is prepared and executed")
     public void query04del_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_05Del();
+        query= manage.getQueryUS_05Del();
         preparedStatement=DBUtils.getPraperedStatement(query);
         preparedStatement.setString(1,email);
     }
@@ -283,7 +262,7 @@ public class DB {
 
     @Given("Query06 is prepared and executed")
     public void query06_is_prepared_and_executed() throws SQLException {
-     query=queryManage.getQueryUS_06();
+     query= manage.getQueryUS_06();
      resultSet=DBUtils.getStatement().executeQuery(query);
     }
     @Given("The ResultSet06 results are processed")
@@ -297,7 +276,7 @@ public class DB {
 
     @Given("Query07 is prepared and executed")
     public void query07_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_07();
+        query= manage.getQueryUS_07();
         resultSet=DBUtils.getStatement().executeQuery(query);
     }
     @Given("The ResultSet07 results are processed")
@@ -307,5 +286,18 @@ public class DB {
             String phone=resultSet.getString("phone");
            assertTrue(phone.contains("5"));
         }
+    }
+
+    @Given("Query09 is prepared and executed")
+    public void query09_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_09();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet09 results are processed")
+    public void the_result_set09_results_are_processed() throws SQLException {
+        resultSet.next();
+        int actualCount=resultSet.getInt("method_count");
+        int expCount=0;
+        assertEquals(expCount,actualCount);
     }
 }

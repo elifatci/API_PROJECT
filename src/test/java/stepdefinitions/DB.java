@@ -300,4 +300,16 @@ public class DB extends Base {
         int expCount=0;
         assertEquals(expCount,actualCount);
     }
+    @Given("Query10 is prepared and executed")
+    public void query10_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_10();
+        resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet10 results are processed")
+    public void the_result_set10_results_are_processed() throws SQLException {
+        resultSet.next();
+        int actualCount=resultSet.getInt("user_count");
+        int expectedCount=2;
+        assertEquals(expectedCount,actualCount);
+    }
 }

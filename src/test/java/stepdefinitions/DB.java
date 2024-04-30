@@ -1,5 +1,6 @@
 package stepdefinitions;
 
+import com.mysql.cj.xdevapi.DbDoc;
 import hooks.Base;
 import io.cucumber.java.en.Given;
 import utilities.DB_Utilities.DBUtils;
@@ -7,6 +8,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -311,5 +313,38 @@ public class DB extends Base {
         int actualCount=resultSet.getInt("user_count");
         int expectedCount=2;
         assertEquals(expectedCount,actualCount);
+    }
+    @Given("Query12 is prepared and executed")
+    public void query12_is_prepared_and_executed() throws SQLException {
+        query=queryManage.getQueryUS_12();
+        resultSet= DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet12 results are processed")
+    public void the_result_set12_results_are_processed() throws SQLException {
+        List<String> noteList=new ArrayList<>();
+        List<String> expectedList = new ArrayList<>(Arrays.asList("Holiday for Eid Ul Azha", "Holiday for Second", "Holiday for christmas"));
+        while (resultSet.next()){
+            noteList.add(resultSet.getString("note"));
+        }
+        for (int i = 0; i <expectedList.size() ; i++) {
+            assertEquals(expectedList.get(i),noteList.get(i));
+        }
+    }
+
+    @Given("Query13 is prepared and executed")
+    public void query13_is_prepared_and_executed() throws SQLException {
+       query=queryManage.getQueryUS_13();
+       resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet13 results are processed")
+    public void the_result_set13_results_are_processed() throws SQLException {
+        List<Integer> idList=new ArrayList<>();
+        List<Integer> expectedList=new ArrayList<>(Arrays.asList(342,343,344));
+        while (resultSet.next()){
+            idList.add(resultSet.getInt("id"));
+        }
+        for (int i = 0; i < expectedList.size(); i++) {
+            assertEquals(expectedList.get(i),idList.get(i));
+        }
     }
 }

@@ -4,14 +4,18 @@ import com.mysql.cj.xdevapi.DbDoc;
 import hooks.Base;
 import io.cucumber.java.en.Given;
 import utilities.DB_Utilities.DBUtils;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static utilities.DB_Utilities.DBUtils.getPraperedStatement;
+import static utilities.DB_Utilities.DBUtils.getQueryResultList;
 
 public class DB extends Base {
 
@@ -77,7 +81,7 @@ public class DB extends Base {
         state_id = faker.number().numberBetween(1, 20);
         status = faker.number().numberBetween(1, 20);
         Date created_at = Date.valueOf(LocalDate.now());
-        preparedStatement = DBUtils.getPraperedStatement(query);
+        preparedStatement = getPraperedStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.setString(2, name);
         preparedStatement.setInt(3, state_id);
@@ -133,7 +137,7 @@ public class DB extends Base {
             user_id = faker.number().numberBetween(3000, 4000);
             device_token = faker.internet().password();
             Date created_at = Date.valueOf(LocalDate.now());
-            preparedStatement = DBUtils.getPraperedStatement(query);
+            preparedStatement = getPraperedStatement(query);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, user_id);
             preparedStatement.setString(3, device_token);
@@ -157,22 +161,23 @@ public class DB extends Base {
     @Given("The ResultSet23 results are processed")
     public void the_result_set23_results_are_processed() throws SQLException {
         resultSet.next();
-        int actualCount=resultSet.getInt("type_count");
-        int expCount=6;
-        assertEquals(expCount,actualCount);
+        int actualCount = resultSet.getInt("type_count");
+        int expCount = 6;
+        assertEquals(expCount, actualCount);
     }
 
     @Given("Query01 is prepared and executed")
     public void query01_is_prepared_and_executed() throws SQLException {
-        query= manage.getQueryUS_01();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = manage.getQueryUS_01();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet01 results are processed")
     public void the_result_set01_results_are_processed() throws SQLException {
         resultSet.next();
-        String expectedName="Fashion";
-        String actualName=resultSet.getString("name");
-        assertEquals(expectedName,actualName);
+        String expectedName = "Fashion";
+        String actualName = resultSet.getString("name");
+        assertEquals(expectedName, actualName);
     }
 
     @Given("Query03Insert is prepared and executed")
@@ -180,16 +185,17 @@ public class DB extends Base {
         query = manage.getQueryUS_03Insert();
         id = faker.number().numberBetween(110000, 220000);
         name = faker.name().firstName();
-        state_id=faker.number().numberBetween(1,5);
-        preparedStatement = DBUtils.getPraperedStatement(query);
+        state_id = faker.number().numberBetween(1, 5);
+        preparedStatement = getPraperedStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.setString(2, name);
-        preparedStatement.setInt(3,state_id);
+        preparedStatement.setInt(3, state_id);
 
     }
+
     @Given("The ResultSet03Insert results are processed")
     public void the_result_set03__insert_results_are_processed() throws SQLException {
-        rowCount =preparedStatement.executeUpdate();
+        rowCount = preparedStatement.executeUpdate();
         int verify = 0;
         if (rowCount > 0) {
             verify++;
@@ -200,73 +206,79 @@ public class DB extends Base {
     @Given("Query03Del is prepared and executed")
     public void query03_del_is_prepared_and_executed() throws SQLException {
         query = manage.getQueryUS_03Del();
-        preparedStatement = DBUtils.getPraperedStatement(query);
+        preparedStatement = getPraperedStatement(query);
         System.out.println(id);
         System.out.println(name);
         preparedStatement.setInt(1, id);
         preparedStatement.setString(2, name);
 
     }
+
     @Given("The ResultSet03Del results are processed")
     public void the_result_set03_del_insert_results_are_processed() throws SQLException {
-        rowCount =preparedStatement.executeUpdate();
-        assertEquals(1,rowCount);
+        rowCount = preparedStatement.executeUpdate();
+        assertEquals(1, rowCount);
     }
 
     @Given("Query04Insert is prepared and executed")
     public void query04_insert_is_prepared_and_executed() throws SQLException {
-        query= manage.getQueryUS_04Insert();
-        id=faker.number().numberBetween(230,430);
-        name=faker.name().firstName();
-        email=faker.internet().emailAddress();
-        query_type=faker.number().numberBetween(10,30);
-        message=faker.lorem().sentence(1);
-        preparedStatement = DBUtils.getPraperedStatement(query);
-        preparedStatement.setInt(1,id);
-        preparedStatement.setString(2,name);
-        preparedStatement.setString(3,email);
-        preparedStatement.setInt(4,query_type);
-        preparedStatement.setString(5,message);
+        query = manage.getQueryUS_04Insert();
+        id = faker.number().numberBetween(230, 430);
+        name = faker.name().firstName();
+        email = faker.internet().emailAddress();
+        query_type = faker.number().numberBetween(10, 30);
+        message = faker.lorem().sentence(1);
+        preparedStatement = getPraperedStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, name);
+        preparedStatement.setString(3, email);
+        preparedStatement.setInt(4, query_type);
+        preparedStatement.setString(5, message);
     }
+
     @Given("The ResultSet04 results are processed")
     public void the_result_set04_results_are_processed() throws SQLException {
-        rowCount=preparedStatement.executeUpdate();
-        assertEquals(1,rowCount);
+        rowCount = preparedStatement.executeUpdate();
+        assertEquals(1, rowCount);
     }
 
     @Given("Query04Update is prepared and executed")
     public void query04_update_is_prepared_and_executed() throws SQLException {
-        query= manage.getQueryUS_04Update();
-        preparedStatement=DBUtils.getPraperedStatement(query);
-        preparedStatement.setString(1,message);
+        query = manage.getQueryUS_04Update();
+        preparedStatement = getPraperedStatement(query);
+        preparedStatement.setString(1, message);
     }
+
     @Given("The ResultSet04Update results are processed")
     public void the_result_set04__update_results_are_processed() throws SQLException {
-        int result=preparedStatement.executeUpdate();
-        int verify=0;
-        if (result>0){
+        int result = preparedStatement.executeUpdate();
+        int verify = 0;
+        if (result > 0) {
             verify++;
         }
-        assertEquals(1,verify);
+        assertEquals(1, verify);
 
     }
+
     @Given("Query04Del is prepared and executed")
     public void query04del_is_prepared_and_executed() throws SQLException {
-        query= manage.getQueryUS_05Del();
-        preparedStatement=DBUtils.getPraperedStatement(query);
-        preparedStatement.setString(1,email);
+        query = manage.getQueryUS_05Del();
+        preparedStatement = getPraperedStatement(query);
+        preparedStatement.setString(1, email);
     }
+
     @Given("The ResultSet04Del results are processed")
     public void the_result_set04del_results_are_processed() throws SQLException {
-        rowCount =preparedStatement.executeUpdate();
-        assertEquals(1,rowCount);
+        rowCount = preparedStatement.executeUpdate();
+        assertEquals(1, rowCount);
     }
 
     @Given("Query06 is prepared and executed")
     public void query06_is_prepared_and_executed() throws SQLException {
-     query= manage.getQueryUS_06();
-     resultSet=DBUtils.getStatement().executeQuery(query);
+        query = manage.getQueryUS_06();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet06 results are processed")
     public void the_result_set06_results_are_processed() throws SQLException {
         while (resultSet.next()) {
@@ -278,73 +290,111 @@ public class DB extends Base {
 
     @Given("Query07 is prepared and executed")
     public void query07_is_prepared_and_executed() throws SQLException {
-        query= manage.getQueryUS_07();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = manage.getQueryUS_07();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet07 results are processed")
     public void the_result_set07_results_are_processed() throws SQLException {
-        while (resultSet.next()){
-            String address=resultSet.getString("address");
-            String phone=resultSet.getString("phone");
-           assertTrue(phone.contains("5"));
+        while (resultSet.next()) {
+            String address = resultSet.getString("address");
+            String phone = resultSet.getString("phone");
+            assertTrue(phone.contains("5"));
         }
     }
 
     @Given("Query09 is prepared and executed")
     public void query09_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_09();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_09();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet09 results are processed")
     public void the_result_set09_results_are_processed() throws SQLException {
         resultSet.next();
-        int actualCount=resultSet.getInt("method_count");
-        int expCount=0;
-        assertEquals(expCount,actualCount);
+        int actualCount = resultSet.getInt("method_count");
+        int expCount = 0;
+        assertEquals(expCount, actualCount);
     }
+
     @Given("Query10 is prepared and executed")
     public void query10_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_10();
-        resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_10();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet10 results are processed")
     public void the_result_set10_results_are_processed() throws SQLException {
         resultSet.next();
-        int actualCount=resultSet.getInt("user_count");
-        int expectedCount=2;
-        assertEquals(expectedCount,actualCount);
+        int actualCount = resultSet.getInt("user_count");
+        int expectedCount = 2;
+        assertEquals(expectedCount, actualCount);
     }
+
     @Given("Query12 is prepared and executed")
     public void query12_is_prepared_and_executed() throws SQLException {
-        query=queryManage.getQueryUS_12();
-        resultSet= DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_12();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet12 results are processed")
     public void the_result_set12_results_are_processed() throws SQLException {
-        List<String> noteList=new ArrayList<>();
+        List<String> noteList = new ArrayList<>();
         List<String> expectedList = new ArrayList<>(Arrays.asList("Holiday for Eid Ul Azha", "Holiday for Second", "Holiday for christmas"));
-        while (resultSet.next()){
+        while (resultSet.next()) {
             noteList.add(resultSet.getString("note"));
         }
-        for (int i = 0; i <expectedList.size() ; i++) {
-            assertEquals(expectedList.get(i),noteList.get(i));
+        for (int i = 0; i < expectedList.size(); i++) {
+            assertEquals(expectedList.get(i), noteList.get(i));
         }
     }
 
     @Given("Query13 is prepared and executed")
     public void query13_is_prepared_and_executed() throws SQLException {
-       query=queryManage.getQueryUS_13();
-       resultSet=DBUtils.getStatement().executeQuery(query);
+        query = queryManage.getQueryUS_13();
+        resultSet = DBUtils.getStatement().executeQuery(query);
     }
+
     @Given("The ResultSet13 results are processed")
     public void the_result_set13_results_are_processed() throws SQLException {
-        List<Integer> idList=new ArrayList<>();
-        List<Integer> expectedList=new ArrayList<>(Arrays.asList(342,343,344));
-        while (resultSet.next()){
+        List<Integer> idList = new ArrayList<>();
+        List<Integer> expectedList = new ArrayList<>(Arrays.asList(342, 343, 344));
+        while (resultSet.next()) {
             idList.add(resultSet.getInt("id"));
         }
         for (int i = 0; i < expectedList.size(); i++) {
-            assertEquals(expectedList.get(i),idList.get(i));
+            assertEquals(expectedList.get(i), idList.get(i));
         }
     }
+
+    @Given("Query15 is prepared and executed")
+    public void query15_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_15();
+        resultSet = DBUtils.getStatement().executeQuery(query);
+    }
+
+    @Given("The ResultSet15 results are processed")
+    public void the_result_set15_results_are_processed() throws SQLException {
+        resultSet.next();
+        assertTrue(getQueryResultList(query).get(1).contains("Oske"));
+    }
+
+    @Given("Query16 is prepared and executed")
+    public void query16_is_prepared_and_executed() throws SQLException {
+        query = queryManage.getQueryUS_16();
+        preparedStatement = getPraperedStatement(query);
+        preparedStatement.setString(1, shipping_address);
+    }
+
+    @Given("The ResultSet16 results are processed")
+    public void the_result_set16_results_are_processed() throws SQLException {
+        resultSet = preparedStatement.executeQuery();
+        int rowCount = 0;
+        while (resultSet.next()) {
+            rowCount++;
+        }
+        assertEquals(3, rowCount);
+    }
 }
+
+

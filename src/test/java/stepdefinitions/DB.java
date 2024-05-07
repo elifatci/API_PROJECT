@@ -385,7 +385,6 @@ public class DB extends Base {
         preparedStatement = getPraperedStatement(query);
         preparedStatement.setString(1, shipping_address);
     }
-
     @Given("The ResultSet16 results are processed")
     public void the_result_set16_results_are_processed() throws SQLException {
         resultSet = preparedStatement.executeQuery();
@@ -394,6 +393,44 @@ public class DB extends Base {
             rowCount++;
         }
         assertEquals(3, rowCount);
+    }
+    @Given("Query17 is prepared and executed")
+    public void query17_is_prepared_and_executed() throws SQLException {
+       query=queryManage.getQueryUS_17();
+       resultSet=DBUtils.getStatement().executeQuery(query);
+    }
+    @Given("The ResultSet17 results are processed")
+    public void the_result_set17_results_are_processed() throws SQLException {
+        resultSet.next();
+        String expected="ra_email@gmail.com";
+        String actual=resultSet.getString("email");
+        assertEquals(expected,actual);
+    }
+    @Given("Query18 is prepared and executed")
+    public void query18_is_prepared_and_executed() throws SQLException {
+        query = manage.getQueryUS_18();
+        id = faker.number().numberBetween(110000, 220000);
+        bank_name = faker.name().firstName();
+        branch_name = faker.name().name();
+        account_name=faker.name().username();
+        account_number=faker.number().numberBetween(111000,222000);
+        opening_balance=faker.number().randomDigit();
+        description=faker.lorem().word();
+        status=faker.number().numberBetween(1,9);
+        preparedStatement = getPraperedStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, bank_name);
+        preparedStatement.setString(3, branch_name);
+        preparedStatement.setString(4, account_name);
+        preparedStatement.setInt(5, account_number);
+        preparedStatement.setInt(6, opening_balance);
+        preparedStatement.setString(7, description);
+        preparedStatement.setInt(8, status);
+    }
+    @Given("The ResultSet18 results are processed")
+    public void the_result_set18_results_are_processed() throws SQLException {
+        int rowCount = preparedStatement.executeUpdate();
+        assertEquals(1, rowCount);
     }
 }
 
